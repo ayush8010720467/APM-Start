@@ -14,9 +14,20 @@ export class ProductListComponent implements OnInit{
     imageMargin: number = 2;
     imgPadding:number = .05;
     showImage: boolean=false;
-    listFilter:string = 'cart';
-
+    _listFilter:string;
     
+    public get listFilter() : string {
+      return this._listFilter;
+    }
+    
+    public set listFilter(value : string) {
+      this._listFilter = value;
+      this.filteredProducts = this.listFilter ? this.performFilter(this.listFilter):this.products;
+    }
+    
+    
+
+    filteredProducts: IProduct[];
     products: IProduct[]=[
           {
             "productId": 2,
@@ -59,7 +70,15 @@ export class ProductListComponent implements OnInit{
             "imageUrl": "https://openclipart.org/image/300px/svg_to_png/120337/xbox-controller_01.png"
           }
     ];
-
+    constructor(){
+      this.filteredProducts=this.products;
+      this.listFilter = 'cart';
+    }
+    performFilter(filterBy:string):IProduct[]{
+      filterBy = filterBy.toLocaleLowerCase();
+      return this.products.filter((product: IProduct)=>
+             product.productName.toLocaleLowerCase().indexOf(filterBy)!== -1);
+    }
     toggelImage():void{
       this.showImage = !this.showImage;
     }
