@@ -15,6 +15,8 @@ export class ProductListComponent implements OnInit{
     imgPadding:number = .05;
     showImage: boolean=false;
     listFilter:string = 'cart';
+
+    
     products: IProduct[]=[
           {
             "productId": 2,
