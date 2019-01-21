@@ -1,4 +1,4 @@
-import {Component,Input,Output, OnChanges} from '@angular/core';
+import {Component,Input,Output, OnChanges , EventEmitter} from '@angular/core';
 
 @Component({
     selector: 'pm-star',
@@ -8,12 +8,13 @@ import {Component,Input,Output, OnChanges} from '@angular/core';
 export class StarComponent  implements OnChanges{
     @Input() rating: number ;
     starWidth: number;
-   // @Output() notify: EventEmitter<string> = new EventEmitter<string>();
+    @Output() ratingClicked : EventEmitter<string> = new EventEmitter<string>();
+
     ngOnChanges():void{
         this.starWidth = this.rating*75 / 5;
     }
     onClick(){
-        console.log(`the rating ${this.rating} was clicked!!!`)
-       // this.notify.emit('Clicked!!');
+        this.ratingClicked.emit(`the rating ${this.rating} was clicked!!!`)
+        
     }
 }
