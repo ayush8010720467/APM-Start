@@ -1,4 +1,5 @@
 import {Component , OnInit } from '@angular/core';
+//import{map,filter} from 'rxjs/operators';
 import { IProduct } from './products';
 import { ProductService } from './product.service';
 
@@ -17,7 +18,8 @@ export class ProductListComponent implements OnInit{
     imgPadding:number = .05;
     showImage: boolean=false;
     _listFilter:string;
-    
+    errorMessage: string;
+
     public get listFilter() : string {
       return this._listFilter;
     }
@@ -33,7 +35,7 @@ export class ProductListComponent implements OnInit{
     products: IProduct[]=[];
     constructor(private productService: ProductService){
       
-      this.listFilter = 'cart';
+      this.listFilter = '';
     }
     onRatingClicked(message: string): void{
       this.pageTitle = this.pageTitle +' '+ message;
@@ -47,8 +49,15 @@ export class ProductListComponent implements OnInit{
       this.showImage = !this.showImage;
     }
     ngOnInit():void{
-      this.products = this.productService.getProducts();
-      this.filteredProducts=this.products;
+       this.productService.getProducts().subscribe(
+        products =>{
+          this.products = products;
+          this.filteredProducts=this.products;
+        },
+        error => this.errorMessage=<any>error
+       );
+         
+      
     }
 
 }
